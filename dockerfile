@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:21-alpine
 
 WORKDIR /app
 
@@ -8,6 +8,7 @@ RUN npm install
 
 COPY . .
 
+ENV PORT=3500
 EXPOSE 3500
 
 CMD ["npm", "start"]
