@@ -17,16 +17,10 @@ function datumsFormat(date) {
 
 // alle Einträge ausgeben
 const alleEintraege = async (req, res, next) => {
-  const eintragAll = req.params;
   let eintrag;
   try {
-    eintrag = await Eintrag.find(eintragAll);
+    eintrag = await Eintrag.find().populate("user");
     eintrag.sort((a, b) => new Date(b.datum) - new Date(a.datum));
-
-    eintrag = eintrag.map((e) => ({
-      ...e.toObject(),
-      datum: datumsFormat(e.datum),
-    }));
   } catch (err) {
     const error = new HttpError("Keine Ausgabe möglich", 404);
     return next(error);
@@ -52,6 +46,7 @@ const eintragHinzufügen = async (req, res, next) => {
   const { typ, titel, betrag, datum } = req.body;
 
   const hinzugefügterEintrag = new Eintrag({
+    user: req.auth.userId,
     typ,
     titel,
     betrag,

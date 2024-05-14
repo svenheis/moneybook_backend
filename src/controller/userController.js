@@ -35,14 +35,11 @@ const registrieren = async (req, res, next) => {
 // User anmelden
 const anmelden = async (req, res, next) => {
   const { email, password } = req.body;
-  let existierenderUser;
-  let korrektesPasswort = false;
+
   try {
-    existierenderUser = await User.findOne({ email });
-    korrektesPasswort = await bcrypt.compare(
-      password,
-      existierenderUser.password
-    );
+    const existierenderUser = await User.findOne({ email });
+    const korrektesPasswort = await existierenderUser.checkPassword(password);
+
     if (existierenderUser && korrektesPasswort) {
       // Token generieren
       const token = jwt.sign(
@@ -60,6 +57,8 @@ const anmelden = async (req, res, next) => {
         sameSite: "strict",
         httpOnly: true,
       });
+
+      console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
         sameSite: "strict",
         httpOnly: true,
@@ -74,6 +73,7 @@ const anmelden = async (req, res, next) => {
       return next(error);
     }
   } catch (err) {
+    console.error(err);
     const error = new HttpError("Einloggen fehlgeschlagen", 500);
     return next(error);
   }
@@ -93,16 +93,21 @@ const tokenCheck = async (req, res, next) => {
 
 // Logout
 const logout = (req, res, next) => {
-  res.clearCookie("username", {
-    sameSite: "strict",
-    httpOnly: true,
-  });
-  res.clearCookie("token", {
-    sameSite: "strict",
-    httpOnly: true,
-  });
-  res.send({ success: true, message: "Logout erfolgreich" });
-  next();
+  try {
+    res.clearCookie("username", {
+      sameSite: "strict",
+      httpOnly: true,
+    });
+    res.clearCookie("token", {
+      sameSite: "strict",
+      httpOnly: true,
+    });
+
+    res.send({ success: true, message: "Logout erfolgreich" });
+  } catch (err) {
+    const error = new HttpError("Logout fehlgeschlagen", 401);
+    next(error);
+  }
 };
 exports.registrieren = registrieren;
 exports.anmelden = anmelden;
