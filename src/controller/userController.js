@@ -42,9 +42,7 @@ const anmelden = async (req, res, next) => {
   try {
     const existierenderUser = await User.findOne({ email });
     const korrektesPasswort = await existierenderUser.checkPassword(password);
-    if (!process.env.TOKEN_SECRET) {
-      throw new Error("TOKEN_SECRET nicht konfiguriert");
-    }
+
     if (existierenderUser && korrektesPasswort) {
       // Token generieren
       const token = jwt.sign(

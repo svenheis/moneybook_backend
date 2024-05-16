@@ -16,8 +16,6 @@ app.post(
 );
 app.post("/login", controller.anmelden);
 
-app.post("/check", controller.tokenCheck);
-
 app.get("/logout", controller.logout);
 
 module.exports = app;
