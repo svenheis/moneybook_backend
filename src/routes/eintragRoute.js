@@ -27,7 +27,7 @@ app.get("/", controller.alleEintraege);
 app.get("/:id", controller.idEintrag);
 
 // Eintrag hinzufügen
-app.post("/", controller.eintragHinzufügen);
+app.post("/", verifyToken, controller.eintragHinzufügen);
 
 // Eintrag löschen
 app.delete("/:id", controller.eintragLoeschen);
