@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 const cookie = require("cookie-parser");
 
 // Lesen der geheimen Informationen
@@ -19,13 +18,13 @@ app.use(cookie());
 app.use(
   cors({
     credentials: true,
-    origin: "https://moneybook-frontend.onrender.com",
+    origin: "https://moneybook-frontend.onrender.com:5173",
   })
 );
 const salt = bcrypt.genSaltSync(10);
 const TOKEN_SECRET = "SecretToken";
 
-// Datenbank und Startmeldung
+// Datenbank, Port und Startmeldung
 mongoose
   .connect(process.env.MONGO)
   .then(
