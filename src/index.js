@@ -18,7 +18,7 @@ app.use(cookie());
 app.use(
   cors({
     credentials: true,
-    origin: "https://moneybook-frontend.onrender.com:5173",
+    origin: "https://moneybook-frontend.onrender.com",
   })
 );
 const salt = bcrypt.genSaltSync(10);
