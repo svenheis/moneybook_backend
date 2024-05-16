@@ -3,10 +3,8 @@ const express = require("express");
 const app = express.Router();
 const controller = require("../controller/eintragController");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
 
 dotenv.config();
-app.use(cookieParser);
 
 const verifyToken = async (req, res, next) => {
   console.log(req.cookies.token);
