@@ -3,6 +3,9 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../models/HttpError");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 // User registrieren
 const registrieren = async (req, res, next) => {

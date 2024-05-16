@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const cookie = require("cookie-parser");
 
 // Lesen der geheimen Informationen
-require(`dotenv`).config();
+dotenv.config();
 
 // Express erstellen
 const app = express();
