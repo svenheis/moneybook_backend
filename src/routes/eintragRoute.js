@@ -1,8 +1,8 @@
-import dotenv from "dotenv";
-import express from"express";
-import router from express.Router();
-import controller from "../controller/eintragController";
-import { verifyToken } from "../controller/verifyToken";
+const dotenv = require("dotenv");
+const express = require("express");
+const router = express.Router();
+const controller = require("../controller/eintragController");
+const { verifyToken } = require("../controller/verifyToken");
 
 dotenv.config();
 

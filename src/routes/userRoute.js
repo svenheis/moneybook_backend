@@ -1,7 +1,7 @@
-import express from "express";
-import router from express.Router();
-import controller from "../controller/userController";
-import { check } from "express-validator";
+const express = require("express");
+const router = express.Router();
+const controller = require("../controller/userController");
+const { check } = require("express-validator");
 
 router.post(
   "/register",
