@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controller/userController");
 const { check } = require("express-validator");
+const { verifyToken } = require("../controller/verifyToken");
 
 router.post(
   "/register",
