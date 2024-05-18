@@ -1,9 +1,9 @@
-const express = require("express");
-const app = express.Router();
-const controller = require("../controller/userController");
-const { check } = require("express-validator");
+import express from "express";
+import router from express.Router();
+import controller from "../controller/userController";
+import { check } from "express-validator";
 
-app.post(
+router.post(
   "/register",
 
   [
@@ -14,8 +14,14 @@ app.post(
 
   controller.registrieren
 );
-app.post("/login", controller.anmelden);
+router.post("/login", controller.anmelden);
 
-app.get("/logout", controller.logout);
+// Route zum anschauen ob verify funktioniert
 
-module.exports = app;
+router.get("/protected", verifyToken, (req, res) => {
+  res.send(`Hello ${req.auth.userName}, you are authenticated!`);
+});
+
+router.get("/logout", controller.logout);
+
+module.exports = router;

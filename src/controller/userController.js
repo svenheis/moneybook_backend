@@ -84,18 +84,6 @@ const anmelden = async (req, res, next) => {
   }
 };
 
-// Token Check
-const tokenCheck = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(" ")[1];
-    const status = await tokenSchutz(token);
-    res.status(status).send({ message: "Token-Check erfolgreich" });
-  } catch (err) {
-    const error = new HttpError("Token-Check fehlgeschlagen", 401);
-    return next(error);
-  }
-};
-
 // Logout
 const logout = (req, res, next) => {
   try {
@@ -116,5 +104,4 @@ const logout = (req, res, next) => {
 };
 exports.registrieren = registrieren;
 exports.anmelden = anmelden;
-exports.tokenCheck = tokenCheck;
 exports.logout = logout;
