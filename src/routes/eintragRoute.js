@@ -11,11 +11,16 @@ app.use(cookie());
 const verifyToken = async (req, res, next) => {
   console.log(req.cookies.token);
   const token = req.cookies.token;
+  if (!token) {
+    return res.sendStatus(401);
+  }
+
   try {
     const data = await jwt.verify(token, process.env.TOKEN_SECRET);
     req.auth = data;
     next();
   } catch (error) {
+    console.error("token verifizierung fehlgeschlagen", error);
     res.sendStatus(403);
   }
 };
