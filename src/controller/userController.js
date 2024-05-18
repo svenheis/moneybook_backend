@@ -56,12 +56,14 @@ const anmelden = async (req, res, next) => {
       );
       // Cookie senden
       res.cookie("token", token, {
-        sameSite: "strict",
+        sameSite: "none",
+        secure: true,
         httpOnly: true,
       });
       console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
-        sameSite: "strict",
+        sameSite: "none",
+        secure: true,
         httpOnly: true,
       });
       return res.send({
