@@ -2,7 +2,7 @@ const cookieParser = require("cookie-parser");
 
 router.use(cookieParser());
 
-export const verifyToken = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const token = req.cookies.token;
   console.log("cookie aus token", token);
   if (!token) {
@@ -19,3 +19,4 @@ export const verifyToken = async (req, res, next) => {
     res.sendStatus(403);
   }
 };
+exports.verifyToken = verifyToken;
