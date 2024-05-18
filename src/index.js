@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*",
+    origin: "https://moneybook-frontend.onrender.com",
     credentials: true,
   })
 );
