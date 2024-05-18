@@ -59,12 +59,14 @@ const anmelden = async (req, res, next) => {
       res.cookie("token", token, {
         sameSite: "strict",
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
       });
 
       console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
         sameSite: "strict",
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
       });
       return res.send({
         success: true,
