@@ -9,14 +9,15 @@ dotenv.config();
 app.use(cookie());
 
 const verifyToken = async (req, res, next) => {
-  console.log(req.cookies.token);
   const token = req.cookies.token;
+  console.log("cookie aus token", token);
   if (!token) {
     return res.sendStatus(401);
   }
 
   try {
-    const data = await jwt.verify(token, process.env.TOKEN_SECRET);
+    const data = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log("verifizierte Daten", data);
     req.auth = data;
     next();
   } catch (error) {
@@ -24,6 +25,11 @@ const verifyToken = async (req, res, next) => {
     res.sendStatus(403);
   }
 };
+
+// Route zum anschauen ob verify funktioniert
+app.get("/protected", verifyToken, (req, res) => {
+  res.send(`Hello ${req.auth.userName}, you are authenticated!`);
+});
 
 // Alle Einträge ausgeben
 app.get("/", controller.alleEintraege);
