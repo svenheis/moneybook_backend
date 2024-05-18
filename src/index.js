@@ -14,11 +14,9 @@ const app = express();
 const port = process.env.PORT;
 app.use(express.json());
 
-app.use(cookieParser());
-
 app.use(
   cors({
-    origin: "https://moneybook-frontend.onrender.com",
+    origin: "*",
     credentials: true,
   })
 );

@@ -59,7 +59,6 @@ const anmelden = async (req, res, next) => {
         sameSite: "strict",
         httpOnly: true,
       });
-
       console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
         sameSite: "strict",
