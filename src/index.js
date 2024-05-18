@@ -17,12 +17,10 @@ app.use(express.json());
 app.use(cookie());
 app.use(
   cors({
-    credentials: true,
     origin: "https://moneybook-frontend.onrender.com",
+    credentials: true,
   })
 );
-const salt = bcrypt.genSaltSync(10);
-const TOKEN_SECRET = "SecretToken";
 
 // Datenbank, Port und Startmeldung
 mongoose
