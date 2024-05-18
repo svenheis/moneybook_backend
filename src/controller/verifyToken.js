@@ -1,3 +1,5 @@
+const express = require("express");
+const router = express.Router();
 const cookieParser = require("cookie-parser");
 
 router.use(cookieParser());
@@ -8,7 +10,6 @@ const verifyToken = async (req, res, next) => {
   if (!token) {
     return res.sendStatus(401);
   }
-
   try {
     const data = jwt.verify(token, process.env.TOKEN_SECRET);
     console.log("verifizierte Daten", data);
