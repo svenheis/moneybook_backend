@@ -56,16 +56,14 @@ const anmelden = async (req, res, next) => {
       );
       // Cookie senden
       res.cookie("token", token, {
-        sameSite: "strict",
+        sameSite: "none",
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
         path: "/",
       });
       console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
-        sameSite: "strict",
+        sameSite: "none",
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
         path: "/",
       });
       return res.send({
@@ -89,15 +87,13 @@ const logout = (req, res, next) => {
   try {
     console.log("Cookies vor dem Löschen im Backend:", req.cookies);
     res.clearCookie("token", {
-      sameSite: "strict",
+      sameSite: "none",
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
       path: "/",
     });
     res.clearCookie("username", {
-      sameSite: "strict",
+      sameSite: "none",
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
       path: "/",
     });
     res.send({
