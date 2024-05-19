@@ -54,16 +54,15 @@ const anmelden = async (req, res, next) => {
           expiresIn: "100000s",
         }
       );
+
       // Cookie senden
       res.cookie("token", token, {
-        sameSite: "none",
-        secure: true,
+        sameSite: "strict",
         httpOnly: true,
       });
       console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
-        sameSite: "none",
-        secure: true,
+        sameSite: "strict",
         httpOnly: true,
       });
       return res.send({

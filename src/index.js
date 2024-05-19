@@ -2,7 +2,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
@@ -14,9 +13,11 @@ const app = express();
 const port = process.env.PORT;
 app.use(express.json());
 
+app.use(cookieParser());
+
 app.use(
   cors({
-    origin: "https://moneybook-frontend.onrender.com",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
