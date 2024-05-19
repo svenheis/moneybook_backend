@@ -54,16 +54,19 @@ const anmelden = async (req, res, next) => {
           expiresIn: "100000s",
         }
       );
-
       // Cookie senden
       res.cookie("token", token, {
         sameSite: "strict",
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
       });
       console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
         sameSite: "strict",
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
       });
       return res.send({
         success: true,
@@ -84,21 +87,38 @@ const anmelden = async (req, res, next) => {
 // Logout
 const logout = (req, res, next) => {
   try {
-    res.clearCookie("username", {
-      sameSite: "strict",
-      httpOnly: true,
-    });
+    console.log("Cookies vor dem Löschen im Backend:", req.cookies);
     res.clearCookie("token", {
       sameSite: "strict",
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
     });
-
-    res.send({ success: true, message: "Logout erfolgreich" });
+    res.clearCookie("username", {
+      sameSite: "strict",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+    });
+    res.send({
+      success: true,
+      message: "Logout erfolgreich",
+    });
   } catch (err) {
     const error = new HttpError("Logout fehlgeschlagen", 401);
     next(error);
   }
 };
+
+// User anzeigen
+
+const userAusgeben = (req, res) => {
+  const username = req.cookies.username;
+  console.log("userAusgebenCookie", username);
+  res.json({ username: username });
+};
+
 exports.registrieren = registrieren;
 exports.anmelden = anmelden;
 exports.logout = logout;
+exports.userAusgeben = userAusgeben;

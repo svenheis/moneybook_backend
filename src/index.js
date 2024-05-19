@@ -15,13 +15,12 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+};
 
+app.use(cors(corsOptions));
 // Datenbank, Port und Startmeldung
 mongoose
   .connect(process.env.MONGO)
