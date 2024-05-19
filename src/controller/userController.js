@@ -56,13 +56,13 @@ const anmelden = async (req, res, next) => {
       );
       // Cookie senden
       res.cookie("token", token, {
-        sameSite: "none",
+        sameSite: "strict",
         httpOnly: true,
         path: "/",
       });
       console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
-        sameSite: "none",
+        sameSite: "strict",
         httpOnly: true,
         path: "/",
       });
@@ -87,12 +87,12 @@ const logout = (req, res, next) => {
   try {
     console.log("Cookies vor dem Löschen im Backend:", req.cookies);
     res.clearCookie("token", {
-      sameSite: "none",
+      sameSite: "strict",
       httpOnly: true,
       path: "/",
     });
     res.clearCookie("username", {
-      sameSite: "none",
+      sameSite: "strict",
       httpOnly: true,
       path: "/",
     });
