@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "https://moneybook-frontend.onrender.com/",
+    origin: "https://moneybook.heis-design.ch",
     credentials: true,
   })
 );
