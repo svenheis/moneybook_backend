@@ -15,12 +15,12 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-const corsOptions = {
-  origin: "https://moneybook.heis-design.ch",
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "https://moneybook-frontend.onrender.com/",
+    credentials: true,
+  })
+);
 
 // Datenbank, Port und Startmeldung
 mongoose
