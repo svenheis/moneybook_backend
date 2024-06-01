@@ -1,9 +1,11 @@
+// Pakete Aufrufen
 const bcrypt = require("bcrypt");
-const HttpError = require("../models/HttpError");
-const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+// Schema Aufruf
+const User = require("../models/User");
 
+// Lesen der geheimen Infos
 dotenv.config();
 
 // User registrieren
@@ -12,13 +14,14 @@ const registrieren = async (req, res, next) => {
   let existierenderUser;
   try {
     existierenderUser = await User.findOne({ email });
-  } catch (err) {
-    const error = new HttpError("Einloggen fehlgeschlagen", 500);
-    return next(error);
-  }
-  if (existierenderUser) {
-    const error = new HttpError("Benutzer existiert bereits", 422);
-    return next(error);
+
+    if (existierenderUser) {
+      console.error("Benutzer existiert bereits", 422);
+      return next();
+    }
+  } catch (error) {
+    console.error("Einloggen fehlgeschlagen", 500);
+    return next();
   }
   const userErstellen = new User({
     userName,
@@ -27,9 +30,9 @@ const registrieren = async (req, res, next) => {
   });
   try {
     userErstellen.save();
-  } catch (err) {
-    const error = new HttpError("User hinzufügen fehlgeschlagen", 500);
-    return next(error);
+  } catch (error) {
+    console.error("User hinzufügen fehlgeschlagen", 500);
+    return next();
   }
   res.status(201).json({});
 };
@@ -60,7 +63,6 @@ const anmelden = async (req, res, next) => {
         httpOnly: true,
         path: "/",
       });
-      console.log(existierenderUser);
       res.cookie("username", existierenderUser.userName, {
         sameSite: "strict",
         httpOnly: true,
@@ -72,20 +74,18 @@ const anmelden = async (req, res, next) => {
         username: existierenderUser.userName,
       });
     } else {
-      const error = new HttpError("Email oder Passwort falsch", 401);
-      return next(error);
+      console.error("Email oder Passwort falsch", 401);
+      return next();
     }
-  } catch (err) {
-    console.error(err);
-    const error = new HttpError("Einloggen fehlgeschlagen", 500);
-    return next(error);
+  } catch (error) {
+    console.error("Einloggen fehlgeschlagen", 500);
+    return next();
   }
 };
 
 // Logout
 const logout = (req, res, next) => {
   try {
-    console.log("Cookies vor dem Löschen im Backend:", req.cookies);
     res.clearCookie("token", {
       sameSite: "strict",
       httpOnly: true,
@@ -100,20 +100,20 @@ const logout = (req, res, next) => {
       success: true,
       message: "Logout erfolgreich",
     });
-  } catch (err) {
-    const error = new HttpError("Logout fehlgeschlagen", 401);
-    next(error);
+  } catch (error) {
+    console.error("Logout fehlgeschlagen", 401);
+    next();
   }
 };
 
 // User anzeigen
-
 const userAusgeben = (req, res) => {
   const username = req.cookies.username;
   console.log("userAusgebenCookie", username);
   res.json({ username: username });
 };
 
+// Exporte
 exports.registrieren = registrieren;
 exports.anmelden = anmelden;
 exports.logout = logout;

@@ -1,9 +1,7 @@
-const uuid = require("uuidv4");
-const mongoose = require("mongoose");
+// Paket Aufruf
 const dotenv = require("dotenv");
+// Schema Aufruf
 const Eintrag = require("../models/Eintrag");
-const mongoDB = require("../utils/mongoDB");
-const HttpError = require("../models/HttpError");
 
 dotenv.config();
 
@@ -13,22 +11,9 @@ const alleEintraege = async (req, res, next) => {
   try {
     eintrag = await Eintrag.find().populate("user");
     eintrag.sort((a, b) => new Date(b.datum) - new Date(a.datum));
-  } catch (err) {
-    const error = new HttpError("Keine Ausgabe möglich", 404);
-    return next(error);
-  }
-  res.json({ eintrag });
-};
-
-// id Eintrag ausgeben
-const idEintrag = async (req, res, next) => {
-  const eintragId = req.params.id;
-  let eintrag;
-  try {
-    eintrag = await Eintrag.findById(eintragId);
-  } catch (err) {
-    const error = new HttpError("Keine Ausgabe nach ID möglich", 404);
-    return next(error);
+  } catch (error) {
+    console.error("Keine Ausgabe möglich", 404);
+    return next();
   }
   res.json({ eintrag });
 };
@@ -36,7 +21,6 @@ const idEintrag = async (req, res, next) => {
 // Eintrag hinzufügen
 const eintragHinzufügen = async (req, res, next) => {
   const { typ, titel, betrag, datum } = req.body;
-
   const hinzugefügterEintrag = new Eintrag({
     user: req.auth.userId,
     typ,
@@ -46,11 +30,10 @@ const eintragHinzufügen = async (req, res, next) => {
   });
   try {
     await hinzugefügterEintrag.save();
-  } catch (err) {
-    const error = new HttpError("Eintrag hinzufügen fehlgeschlagen", 500);
-    return next(error);
+  } catch (error) {
+    console.error("Eintrag hinzufügen fehlgeschlagen", 500);
+    return next();
   }
-
   res.status(201).json({ message: hinzugefügterEintrag });
 };
 
@@ -60,14 +43,13 @@ const eintragLoeschen = async (req, res, next) => {
   let eintrag;
   try {
     eintrag = await Eintrag.findByIdAndDelete(eintragsId);
-  } catch (err) {
-    const error = new HttpError("Keine Ausgabe nach ID möglich", 500);
-    return next(error);
+  } catch (error) {
+    console.error("Keine Ausgabe nach ID möglich", 500);
+    return next();
   }
   res.status(200).json({ message: "Eintrag gelöscht" });
 };
 
 exports.alleEintraege = alleEintraege;
-exports.idEintrag = idEintrag;
 exports.eintragHinzufügen = eintragHinzufügen;
 exports.eintragLoeschen = eintragLoeschen;

@@ -1,4 +1,4 @@
-// Paket Importe
+// Paket Aufrufe
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -17,7 +17,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "https://moneybook.heis-design.ch",
+    origin: "https://moneybook.heis-design.ch", // Render Einstellung
+    //origin: "http://localhost:5173", // Lokale Einstellung
     credentials: true,
   })
 );
@@ -30,8 +31,8 @@ mongoose
       console.log(`Der Server Startet unter dem Port ${port}`);
     })
   )
-  .catch((err) => {
-    console.log(err);
+  .catch((error) => {
+    console.error("Fehler aufgetreten", error);
   });
 
 // Routen Importe
