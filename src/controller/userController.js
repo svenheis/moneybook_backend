@@ -109,7 +109,6 @@ const logout = (req, res, next) => {
 // User anzeigen
 const userAusgeben = (req, res) => {
   const username = req.cookies.username;
-  console.log("userAusgebenCookie", username);
   res.json({ username: username });
 };
 
